@@ -19,7 +19,7 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskFragment
     private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
     private ViewPager mViewPager;
-    private List<Task> mCrimes;
+    private List<Task> mTasks;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, TaskPagerActivity.class);
@@ -36,24 +36,24 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskFragment
 
         mViewPager = (ViewPager) findViewById(R.id.activity_crime_pager_view_pager);
 
-        mCrimes = TaskLab.get(this).getTasks();
+        mTasks = TaskLab.get(this).getTasks();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
             @Override
             public Fragment getItem(int position) {
-                Task crime = mCrimes.get(position);
+                Task crime = mTasks.get(position);
                 return TaskFragment.newInstance(crime.getId());
             }
 
             @Override
             public int getCount() {
-                return mCrimes.size();
+                return mTasks.size();
             }
         });
 
-        for (int i = 0; i < mCrimes.size(); i++) {
-            if (mCrimes.get(i).getId().equals(crimeId)) {
+        for (int i = 0; i < mTasks.size(); i++) {
+            if (mTasks.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
