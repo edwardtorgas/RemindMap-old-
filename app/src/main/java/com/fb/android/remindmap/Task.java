@@ -6,19 +6,19 @@ import java.util.UUID;
 /**
  * Created by judyl on 6/17/15.
  */
-public class Crime {
+public class Task {
 
     private UUID mId;
     private String mTitle;
     private Date mDate;
-    private boolean mSolved;
-    private String mSuspect;
+    private boolean mDone;
+    private String mLocation;
 
-    public Crime() {
+    public Task() {
         this(UUID.randomUUID());
     }
 
-    public Crime(UUID id) {
+    public Task(UUID id) {
         mId = id;
         mDate = new Date();
     }
@@ -31,12 +31,12 @@ public class Crime {
         mDate = date;
     }
 
-    public boolean isSolved() {
-        return mSolved;
+    public boolean isDone() {
+        return mDone;
     }
 
-    public void setSolved(boolean solved) {
-        mSolved = solved;
+    public void setDone(boolean done) {
+        mDone = done;
     }
 
     public UUID getId() {
@@ -55,12 +55,12 @@ public class Crime {
         mTitle = title;
     }
 
-    public String getSuspect() {
-        return mSuspect;
+    public String getLocation() {
+        return mLocation;
     }
 
-    public void setSuspect(String suspect) {
-        mSuspect = suspect;
+    public void setLocation(String location) {
+        mLocation = location;
     }
 
     public String getPhotoFilename() {

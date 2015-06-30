@@ -15,14 +15,14 @@ import java.util.UUID;
 /**
  * Created by judyl on 6/19/15.
  */
-public class CrimePagerActivity  extends AppCompatActivity implements CrimeFragment.Callbacks {
+public class TaskPagerActivity extends AppCompatActivity implements TaskFragment.Callbacks {
     private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
     private ViewPager mViewPager;
-    private List<Crime> mCrimes;
+    private List<Task> mTasks;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
-        Intent intent = new Intent(packageContext, CrimePagerActivity.class);
+        Intent intent = new Intent(packageContext, TaskPagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
     }
@@ -34,26 +34,26 @@ public class CrimePagerActivity  extends AppCompatActivity implements CrimeFragm
 
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
-        mViewPager = (ViewPager) findViewById(R.id.activity_crime_pager_view_pager);
+        mViewPager = (ViewPager) findViewById(R.id.activity_task_pager_view_pager);
 
-        mCrimes = CrimeLab.get(this).getCrimes();
+        mTasks = TaskLab.get(this).getTasks();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
             @Override
             public Fragment getItem(int position) {
-                Crime crime = mCrimes.get(position);
-                return CrimeFragment.newInstance(crime.getId());
+                Task crime = mTasks.get(position);
+                return TaskFragment.newInstance(crime.getId());
             }
 
             @Override
             public int getCount() {
-                return mCrimes.size();
+                return mTasks.size();
             }
         });
 
-        for (int i = 0; i < mCrimes.size(); i++) {
-            if (mCrimes.get(i).getId().equals(crimeId)) {
+        for (int i = 0; i < mTasks.size(); i++) {
+            if (mTasks.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
@@ -61,7 +61,7 @@ public class CrimePagerActivity  extends AppCompatActivity implements CrimeFragm
     }
 
     @Override
-    public void onCrimeUpdated(Crime crime) {
+    public void onTaskUpdated(Task crime) {
 
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by judyl on 6/18/15.
  */
-public class CrimeListFragment extends Fragment {
+public class TaskListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
@@ -29,7 +29,7 @@ public class CrimeListFragment extends Fragment {
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
     public interface Callbacks {
-        void onCrimeSelected(Crime crime);
+        void onTaskSelected(Task crime);
     }
 
     @Override
@@ -96,10 +96,10 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
+                Task task = new Task();
+                TaskLab.get(getActivity()).addTask(task);
                 updateUI();
-                mCallbacks.onCrimeSelected(crime);
+                mCallbacks.onTaskSelected(task);
                 return true;
             case R.id.menu_item_show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
@@ -112,9 +112,9 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateSubtitle() {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        int crimeCount = crimeLab.getCrimes().size();
-        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        TaskLab taskLab = TaskLab.get(getActivity());
+        int taskCount = taskLab.getTasks().size();
+        String subtitle = getString(R.string.subtitle_format, taskCount);
 
         if (!mSubtitleVisible) {
             subtitle = null;
@@ -125,79 +125,79 @@ public class CrimeListFragment extends Fragment {
     }
 
     public void updateUI() {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        List<Crime> crimes = crimeLab.getCrimes();
+        TaskLab taskLab = TaskLab.get(getActivity());
+        List<Task> crimes = taskLab.getTasks();
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.setCrimes(crimes);
+            mAdapter.setTasks(crimes);
             mAdapter.notifyDataSetChanged();
         }
 
         updateSubtitle();
     }
 
-    private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
-        private CheckBox mSolvedCheckBox;
-        private Crime mCrime;
+        private CheckBox mDoneCheckBox;
+        private Task mTask;
 
-        public void bindCrime(Crime crime) {
-            mCrime = crime;
-            mTitleTextView.setText(mCrime.getTitle());
-            mDateTextView.setText(mCrime.getDate().toString());
-            mSolvedCheckBox.setChecked(mCrime.isSolved());
+        public void bindCrime(Task task) {
+            mTask = task;
+            mTitleTextView.setText(mTask.getTitle());
+            mDateTextView.setText(mTask.getDate().toString());
+            mDoneCheckBox.setChecked(mTask.isDone());
         }
 
-        public CrimeHolder(View itemView) {
+        public TaskHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
-            mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
-            mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
-            mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_task_title_text_view);
+            mDateTextView = (TextView) itemView.findViewById(R.id.list_item_task_date_text_view);
+            mDoneCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_task_completed_check_box);
         }
 
         @Override
         public void onClick(View v) {
-            mCallbacks.onCrimeSelected(mCrime);
+            mCallbacks.onTaskSelected(mTask);
         }
 
     }
 
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+    private class CrimeAdapter extends RecyclerView.Adapter<TaskHolder> {
 
-        private List<Crime> mCrimes;
+        private List<Task> mTasks;
 
-        public CrimeAdapter(List<Crime> crimes) {
-            mCrimes = crimes;
+        public CrimeAdapter(List<Task> tasks) {
+            mTasks = tasks;
         }
 
         @Override
-        public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TaskHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater
-                    .inflate(R.layout.list_item_crime, parent, false);
-            return new CrimeHolder(view);
+                    .inflate(R.layout.list_item_task, parent, false);
+            return new TaskHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(CrimeHolder holder, int position) {
-            Crime crime = mCrimes.get(position);
-            holder.bindCrime(crime);
+        public void onBindViewHolder(TaskHolder holder, int position) {
+            Task task = mTasks.get(position);
+            holder.bindCrime(task);
         }
 
         @Override
         public int getItemCount() {
-            return mCrimes.size();
+            return mTasks.size();
         }
 
-        public void setCrimes(List<Crime> crimes) {
-            mCrimes = crimes;
+        public void setTasks(List<Task> tasks) {
+            mTasks = tasks;
         }
     }
 }

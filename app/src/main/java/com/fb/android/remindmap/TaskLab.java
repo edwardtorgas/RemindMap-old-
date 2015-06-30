@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
-import com.fb.android.remindmap.database.CrimeCursorWrapper;
-import com.fb.android.remindmap.database.CrimeDbSchema.CrimeTable;
-import com.fb.android.remindmap.database.CrimeBaseHelper;
+import com.fb.android.remindmap.database.TaskCursorWrapper;
+import com.fb.android.remindmap.database.TaskDbSchema.TaskTable;
+import com.fb.android.remindmap.database.TaskBaseHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,50 +18,50 @@ import java.util.UUID;
 /**
  * Created by judyl on 6/18/15.
  */
-public class CrimeLab {
-    private static CrimeLab sCrimeLab;
+public class TaskLab {
+    private static TaskLab sTaskLab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
-    public static CrimeLab get(Context context) {
-        if (sCrimeLab == null) {
-            sCrimeLab =new CrimeLab(context);
+    public static TaskLab get(Context context) {
+        if (sTaskLab == null) {
+            sTaskLab =new TaskLab(context);
         }
-        return sCrimeLab;
+        return sTaskLab;
     }
 
-    private CrimeLab(Context context) {
+    private TaskLab(Context context) {
         mContext = context.getApplicationContext();
-        mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
+        mDatabase = new TaskBaseHelper(mContext).getWritableDatabase();
     }
 
-    public void addCrime(Crime c) {
+    public void addTask(Task c) {
         ContentValues values = getContentValues(c);
 
-        mDatabase.insert(CrimeTable.NAME, null, values);
+        mDatabase.insert(TaskTable.NAME, null, values);
     }
 
-    public List<Crime> getCrimes() {
-        List<Crime> crimes = new ArrayList<>();
+    public List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
 
-        CrimeCursorWrapper cursor = queryCrimes(null, null);
+        TaskCursorWrapper cursor = queryCrimes(null, null);
 
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                crimes.add(cursor.getCrime());
+                tasks.add(cursor.getCrime());
                 cursor.moveToNext();
             }
         } finally {
             cursor.close();
         }
 
-        return crimes;
+        return tasks;
     }
 
-    public Crime getCrime(UUID id) {
-        CrimeCursorWrapper cursor = queryCrimes(
-                CrimeTable.Cols.UUID + " =?",
+    public Task getTask(UUID id) {
+        TaskCursorWrapper cursor = queryCrimes(
+                TaskTable.Cols.UUID + " =?",
                 new String[] { id.toString() }
         );
 
@@ -77,7 +77,7 @@ public class CrimeLab {
         }
     }
 
-    public File getPhotoFile(Crime crime) {
+    public File getPhotoFile(Task crime) {
         File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         if (externalFilesDir == null) {
@@ -87,29 +87,29 @@ public class CrimeLab {
         return new File(externalFilesDir, crime.getPhotoFilename());
     }
 
-    public void updateCrime(Crime crime) {
+    public void updateTask(Task crime) {
         String uuidString = crime.getId().toString();
         ContentValues values = getContentValues(crime);
 
-        mDatabase.update(CrimeTable.NAME, values,
-                CrimeTable.Cols.UUID + " = ?",
+        mDatabase.update(TaskTable.NAME, values,
+                TaskTable.Cols.UUID + " = ?",
                 new String[] { uuidString });
     }
 
-    private static ContentValues getContentValues(Crime crime) {
+    private static ContentValues getContentValues(Task task) {
         ContentValues values = new ContentValues();
-        values.put(CrimeTable.Cols.UUID, crime.getId().toString());
-        values.put(CrimeTable.Cols.TITLE, crime.getTitle());
-        values.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
-        values.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
-        values.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
+        values.put(TaskTable.Cols.UUID, task.getId().toString());
+        values.put(TaskTable.Cols.TITLE, task.getTitle());
+        values.put(TaskTable.Cols.DATE, task.getDate().getTime());
+        values.put(TaskTable.Cols.DONE, task.isDone() ? 1 : 0);
+        values.put(TaskTable.Cols.LOCATION, task.getLocation());
 
         return values;
     }
 
-    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
+    private TaskCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
-                CrimeTable.NAME,
+                TaskTable.NAME,
                 null, // Columns - null selects all columns
                 whereClause,
                 whereArgs,
@@ -118,7 +118,7 @@ public class CrimeLab {
                 null  // orderBy
         );
 
-        return new CrimeCursorWrapper(cursor);
+        return new TaskCursorWrapper(cursor);
     }
 
 }
