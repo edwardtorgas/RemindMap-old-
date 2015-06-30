@@ -36,7 +36,7 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskFragment
 
         mViewPager = (ViewPager) findViewById(R.id.activity_crime_pager_view_pager);
 
-        mCrimes = TaskLab.get(this).getCrimes();
+        mCrimes = TaskLab.get(this).getTasks();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
@@ -61,7 +61,7 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskFragment
     }
 
     @Override
-    public void onCrimeUpdated(Task crime) {
+    public void onTaskUpdated(Task crime) {
 
     }
 }

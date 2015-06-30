@@ -11,8 +11,8 @@ public class Task {
     private UUID mId;
     private String mTitle;
     private Date mDate;
-    private boolean mSolved;
-    private String mSuspect;
+    private boolean mDone;
+    private String mLocation;
 
     public Task() {
         this(UUID.randomUUID());
@@ -31,12 +31,12 @@ public class Task {
         mDate = date;
     }
 
-    public boolean isSolved() {
-        return mSolved;
+    public boolean isDone() {
+        return mDone;
     }
 
-    public void setSolved(boolean solved) {
-        mSolved = solved;
+    public void setDone(boolean done) {
+        mDone = done;
     }
 
     public UUID getId() {
@@ -55,12 +55,12 @@ public class Task {
         mTitle = title;
     }
 
-    public String getSuspect() {
-        return mSuspect;
+    public String getLocation() {
+        return mLocation;
     }
 
-    public void setSuspect(String suspect) {
-        mSuspect = suspect;
+    public void setLocation(String location) {
+        mLocation = location;
     }
 
     public String getPhotoFilename() {

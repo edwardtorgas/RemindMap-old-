@@ -19,12 +19,12 @@ public class TaskListActivity extends SingleFragmentActivity implements TaskList
     }
 
     @Override
-    public void onCrimeSelected(Task crime) {
+    public void onTaskSelected(Task task) {
         if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = TaskPagerActivity.newIntent(this, crime.getId());
+            Intent intent = TaskPagerActivity.newIntent(this, task.getId());
             startActivity(intent);
         } else {
-            Fragment newDetail = TaskFragment.newInstance(crime.getId());
+            Fragment newDetail = TaskFragment.newInstance(task.getId());
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_fragment_container, newDetail)
@@ -32,7 +32,7 @@ public class TaskListActivity extends SingleFragmentActivity implements TaskList
         }
     }
 
-    public void onCrimeUpdated(Task crime) {
+    public void onTaskUpdated(Task task) {
         TaskListFragment listFragment = (TaskListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         listFragment.updateUI();

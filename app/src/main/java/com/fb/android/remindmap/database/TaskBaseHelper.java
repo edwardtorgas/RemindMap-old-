@@ -4,28 +4,28 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.fb.android.remindmap.database.CrimeDbSchema.CrimeTable;
+import com.fb.android.remindmap.database.TaskDbSchema.TaskTable;
 
 /**
  * Created by judyl on 6/22/15.
  */
-public class CrimeBaseHelper extends SQLiteOpenHelper {
+public class TaskBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
-    private static String DATEBASE_NAME = "crimeBase.db";
+    private static String DATEBASE_NAME = "taskBase.db";
 
-    public CrimeBaseHelper(Context context) {
+    public TaskBaseHelper(Context context) {
         super(context, DATEBASE_NAME, null, VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + CrimeTable.NAME + "(" +
+        db.execSQL("create table " + TaskTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
-                CrimeTable.Cols.UUID + ", " +
-                CrimeTable.Cols.TITLE + ", " +
-                CrimeTable.Cols.DATE + ", " +
-                CrimeTable.Cols.SOLVED + ", " +
-                CrimeTable.Cols.SUSPECT +
+                TaskTable.Cols.UUID + ", " +
+                TaskTable.Cols.TITLE + ", " +
+                TaskTable.Cols.DATE + ", " +
+                TaskTable.Cols.DONE + ", " +
+                TaskTable.Cols.LOCATION +
                 ")"
         );
     }
