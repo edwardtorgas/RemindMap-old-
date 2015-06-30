@@ -18,31 +18,31 @@ import java.util.UUID;
 /**
  * Created by judyl on 6/18/15.
  */
-public class CrimeLab {
-    private static CrimeLab sCrimeLab;
+public class TaskLab {
+    private static TaskLab sCrimeLab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
-    public static CrimeLab get(Context context) {
+    public static TaskLab get(Context context) {
         if (sCrimeLab == null) {
-            sCrimeLab =new CrimeLab(context);
+            sCrimeLab =new TaskLab(context);
         }
         return sCrimeLab;
     }
 
-    private CrimeLab(Context context) {
+    private TaskLab(Context context) {
         mContext = context.getApplicationContext();
         mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
     }
 
-    public void addCrime(Crime c) {
+    public void addCrime(Task c) {
         ContentValues values = getContentValues(c);
 
         mDatabase.insert(CrimeTable.NAME, null, values);
     }
 
-    public List<Crime> getCrimes() {
-        List<Crime> crimes = new ArrayList<>();
+    public List<Task> getCrimes() {
+        List<Task> crimes = new ArrayList<>();
 
         CrimeCursorWrapper cursor = queryCrimes(null, null);
 
@@ -59,7 +59,7 @@ public class CrimeLab {
         return crimes;
     }
 
-    public Crime getCrime(UUID id) {
+    public Task getCrime(UUID id) {
         CrimeCursorWrapper cursor = queryCrimes(
                 CrimeTable.Cols.UUID + " =?",
                 new String[] { id.toString() }
@@ -77,7 +77,7 @@ public class CrimeLab {
         }
     }
 
-    public File getPhotoFile(Crime crime) {
+    public File getPhotoFile(Task crime) {
         File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         if (externalFilesDir == null) {
@@ -87,7 +87,7 @@ public class CrimeLab {
         return new File(externalFilesDir, crime.getPhotoFilename());
     }
 
-    public void updateCrime(Crime crime) {
+    public void updateCrime(Task crime) {
         String uuidString = crime.getId().toString();
         ContentValues values = getContentValues(crime);
 
@@ -96,7 +96,7 @@ public class CrimeLab {
                 new String[] { uuidString });
     }
 
-    private static ContentValues getContentValues(Crime crime) {
+    private static ContentValues getContentValues(Task crime) {
         ContentValues values = new ContentValues();
         values.put(CrimeTable.Cols.UUID, crime.getId().toString());
         values.put(CrimeTable.Cols.TITLE, crime.getTitle());

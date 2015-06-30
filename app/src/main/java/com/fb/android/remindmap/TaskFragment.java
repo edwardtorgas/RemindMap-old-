@@ -32,7 +32,7 @@ import java.util.UUID;
 /**
  * Created by judyl on 6/17/15.
  */
-public class CrimeFragment extends Fragment {
+public class TaskFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
@@ -41,7 +41,7 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
 
-    private Crime mCrime;
+    private Task mCrime;
     private File mPhotoFile;
     private EditText mTitleField;
     private Button mDateButton;
@@ -53,14 +53,14 @@ public class CrimeFragment extends Fragment {
     private Callbacks mCallbacks;
 
     public interface Callbacks {
-        void onCrimeUpdated(Crime crime);
+        void onCrimeUpdated(Task crime);
     }
 
-    public static CrimeFragment newInstance(UUID crimeId) {
+    public static TaskFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
 
-        CrimeFragment fragment = new CrimeFragment();
+        TaskFragment fragment = new TaskFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,15 +75,15 @@ public class CrimeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
-        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
-        mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
+        mCrime = TaskLab.get(getActivity()).getCrime(crimeId);
+        mPhotoFile = TaskLab.get(getActivity()).getPhotoFile(mCrime);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        TaskLab.get(getActivity()).updateCrime(mCrime);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class CrimeFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                dialog.setTargetFragment(TaskFragment.this, REQUEST_DATE);
                 dialog.show(manager, DIALOG_DATE);
             }
         });
@@ -195,7 +195,7 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updateCrime() {
-        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        TaskLab.get(getActivity()).updateCrime(mCrime);
         mCallbacks.onCrimeUpdated(mCrime);
     }
 

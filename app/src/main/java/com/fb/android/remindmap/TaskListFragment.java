@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by judyl on 6/18/15.
  */
-public class CrimeListFragment extends Fragment {
+public class TaskListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
@@ -29,7 +29,7 @@ public class CrimeListFragment extends Fragment {
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
     public interface Callbacks {
-        void onCrimeSelected(Crime crime);
+        void onCrimeSelected(Task crime);
     }
 
     @Override
@@ -96,8 +96,8 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
+                Task crime = new Task();
+                TaskLab.get(getActivity()).addCrime(crime);
                 updateUI();
                 mCallbacks.onCrimeSelected(crime);
                 return true;
@@ -112,7 +112,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateSubtitle() {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        TaskLab crimeLab = TaskLab.get(getActivity());
         int crimeCount = crimeLab.getCrimes().size();
         String subtitle = getString(R.string.subtitle_format, crimeCount);
 
@@ -125,8 +125,8 @@ public class CrimeListFragment extends Fragment {
     }
 
     public void updateUI() {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        List<Crime> crimes = crimeLab.getCrimes();
+        TaskLab crimeLab = TaskLab.get(getActivity());
+        List<Task> crimes = crimeLab.getCrimes();
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
@@ -144,9 +144,9 @@ public class CrimeListFragment extends Fragment {
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mSolvedCheckBox;
-        private Crime mCrime;
+        private Task mCrime;
 
-        public void bindCrime(Crime crime) {
+        public void bindCrime(Task crime) {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
@@ -171,9 +171,9 @@ public class CrimeListFragment extends Fragment {
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
 
-        private List<Crime> mCrimes;
+        private List<Task> mCrimes;
 
-        public CrimeAdapter(List<Crime> crimes) {
+        public CrimeAdapter(List<Task> crimes) {
             mCrimes = crimes;
         }
 
@@ -187,7 +187,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(CrimeHolder holder, int position) {
-            Crime crime = mCrimes.get(position);
+            Task crime = mCrimes.get(position);
             holder.bindCrime(crime);
         }
 
@@ -196,7 +196,7 @@ public class CrimeListFragment extends Fragment {
             return mCrimes.size();
         }
 
-        public void setCrimes(List<Crime> crimes) {
+        public void setCrimes(List<Task> crimes) {
             mCrimes = crimes;
         }
     }

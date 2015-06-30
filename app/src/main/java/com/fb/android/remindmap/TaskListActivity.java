@@ -6,11 +6,11 @@ import android.support.v4.app.Fragment;
 /**
  * Created by judyl on 6/18/15.
  */
-public class CrimeListActivity extends SingleFragmentActivity implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks {
+public class TaskListActivity extends SingleFragmentActivity implements TaskListFragment.Callbacks, TaskFragment.Callbacks {
 
     @Override
     protected Fragment createFragment() {
-        return new CrimeListFragment();
+        return new TaskListFragment();
     }
 
     @Override
@@ -19,12 +19,12 @@ public class CrimeListActivity extends SingleFragmentActivity implements CrimeLi
     }
 
     @Override
-    public void onCrimeSelected(Crime crime) {
+    public void onCrimeSelected(Task crime) {
         if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = CrimePagerActivity.newIntent(this, crime.getId());
+            Intent intent = TaskPagerActivity.newIntent(this, crime.getId());
             startActivity(intent);
         } else {
-            Fragment newDetail = CrimeFragment.newInstance(crime.getId());
+            Fragment newDetail = TaskFragment.newInstance(crime.getId());
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_fragment_container, newDetail)
@@ -32,8 +32,8 @@ public class CrimeListActivity extends SingleFragmentActivity implements CrimeLi
         }
     }
 
-    public void onCrimeUpdated(Crime crime) {
-        CrimeListFragment listFragment = (CrimeListFragment)
+    public void onCrimeUpdated(Task crime) {
+        TaskListFragment listFragment = (TaskListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         listFragment.updateUI();
     }

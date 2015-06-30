@@ -3,7 +3,7 @@ package com.fb.android.remindmap.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.fb.android.remindmap.Crime;
+import com.fb.android.remindmap.Task;
 import com.fb.android.remindmap.database.CrimeDbSchema.CrimeTable;
 
 import java.util.Date;
@@ -17,14 +17,14 @@ public class CrimeCursorWrapper extends CursorWrapper {
         super(cursor);
     }
 
-    public Crime getCrime() {
+    public Task getCrime() {
         String uuidString = getString(getColumnIndex(CrimeTable.Cols.UUID));
         String title = getString(getColumnIndex(CrimeTable.Cols.TITLE));
         long date = getLong(getColumnIndex(CrimeTable.Cols.DATE));
         int isSolved = getInt(getColumnIndex(CrimeTable.Cols.SOLVED));
         String suspect = getString(getColumnIndex(CrimeTable.Cols.SUSPECT));
 
-        Crime crime = new Crime(UUID.fromString(uuidString));
+        Task crime = new Task(UUID.fromString(uuidString));
         crime.setTitle(title);
         crime.setDate(new Date(date));
         crime.setSolved(isSolved != 0);

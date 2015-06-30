@@ -6,7 +6,7 @@ import java.util.UUID;
 /**
  * Created by judyl on 6/17/15.
  */
-public class Crime {
+public class Task {
 
     private UUID mId;
     private String mTitle;
@@ -14,11 +14,11 @@ public class Crime {
     private boolean mSolved;
     private String mSuspect;
 
-    public Crime() {
+    public Task() {
         this(UUID.randomUUID());
     }
 
-    public Crime(UUID id) {
+    public Task(UUID id) {
         mId = id;
         mDate = new Date();
     }

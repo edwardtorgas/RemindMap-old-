@@ -15,14 +15,14 @@ import java.util.UUID;
 /**
  * Created by judyl on 6/19/15.
  */
-public class CrimePagerActivity  extends AppCompatActivity implements CrimeFragment.Callbacks {
+public class TaskPagerActivity extends AppCompatActivity implements TaskFragment.Callbacks {
     private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
     private ViewPager mViewPager;
-    private List<Crime> mCrimes;
+    private List<Task> mCrimes;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
-        Intent intent = new Intent(packageContext, CrimePagerActivity.class);
+        Intent intent = new Intent(packageContext, TaskPagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
     }
@@ -36,14 +36,14 @@ public class CrimePagerActivity  extends AppCompatActivity implements CrimeFragm
 
         mViewPager = (ViewPager) findViewById(R.id.activity_crime_pager_view_pager);
 
-        mCrimes = CrimeLab.get(this).getCrimes();
+        mCrimes = TaskLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
             @Override
             public Fragment getItem(int position) {
-                Crime crime = mCrimes.get(position);
-                return CrimeFragment.newInstance(crime.getId());
+                Task crime = mCrimes.get(position);
+                return TaskFragment.newInstance(crime.getId());
             }
 
             @Override
@@ -61,7 +61,7 @@ public class CrimePagerActivity  extends AppCompatActivity implements CrimeFragm
     }
 
     @Override
-    public void onCrimeUpdated(Crime crime) {
+    public void onCrimeUpdated(Task crime) {
 
     }
 }
