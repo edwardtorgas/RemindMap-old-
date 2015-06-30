@@ -157,9 +157,9 @@ public class TaskListFragment extends Fragment {
             super(itemView);
             itemView.setOnClickListener(this);
 
-            mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
-            mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
-            mDoneCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_task_title_text_view);
+            mDateTextView = (TextView) itemView.findViewById(R.id.list_item_task_date_text_view);
+            mDoneCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_task_completed_check_box);
         }
 
         @Override
@@ -181,7 +181,7 @@ public class TaskListFragment extends Fragment {
         public TaskHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater
-                    .inflate(R.layout.list_item_crime, parent, false);
+                    .inflate(R.layout.list_item_task, parent, false);
             return new TaskHolder(view);
         }
 

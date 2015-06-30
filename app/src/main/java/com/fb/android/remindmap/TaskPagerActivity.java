@@ -34,7 +34,7 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskFragment
 
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
-        mViewPager = (ViewPager) findViewById(R.id.activity_crime_pager_view_pager);
+        mViewPager = (ViewPager) findViewById(R.id.activity_task_pager_view_pager);
 
         mTasks = TaskLab.get(this).getTasks();
         FragmentManager fragmentManager = getSupportFragmentManager();

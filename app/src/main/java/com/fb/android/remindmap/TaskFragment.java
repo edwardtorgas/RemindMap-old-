@@ -94,9 +94,9 @@ public class TaskFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+        View v = inflater.inflate(R.layout.fragment_task, container, false);
 
-        mTitleField = (EditText)v.findViewById(R.id.crime_title);
+        mTitleField = (EditText)v.findViewById(R.id.task_title);
         mTitleField.setText(mTask.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,7 +116,7 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        mDateButton = (Button)v.findViewById(R.id.crime_date);
+        mDateButton = (Button)v.findViewById(R.id.task_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +128,7 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        mDoneCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
+        mDoneCheckBox = (CheckBox) v.findViewById(R.id.task_completed);
         mDoneCheckBox.setChecked(mTask.isDone());
         mDoneCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -138,61 +138,61 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        mReportButton = (Button) v.findViewById(R.id.crime_report);
-        mReportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
-                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
-                i = Intent.createChooser(i, getString(R.string.send_report));
-                startActivity(i);
-            }
-        });
+//        mReportButton = (Button) v.findViewById(R.id.crime_report);
+//        mReportButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(Intent.ACTION_SEND);
+//                i.setType("text/plain");
+//                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+//                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+//                i = Intent.createChooser(i, getString(R.string.send_report));
+//                startActivity(i);
+//            }
+//        });
 
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        mLocationButton = (Button)v.findViewById(R.id.crime_suspect);
-        mLocationButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivityForResult(pickContact, REQUEST_CONTACT);
-            }
-        });
-
-        if (mTask.getLocation() != null) {
-            mLocationButton.setText(mTask.getLocation());
-        }
-
-        PackageManager packageManager = getActivity().getPackageManager();
-        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
-            mLocationButton.setEnabled(false);
-        }
-
-        mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        boolean canTakePhoto = mPhotoFile != null &&
-                captureImage.resolveActivity(packageManager) != null;
-        mPhotoButton.setEnabled(canTakePhoto);
-
-
-        if (canTakePhoto) {
-            Uri uri = Uri.fromFile(mPhotoFile);
-            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        }
-
-        mPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(captureImage, REQUEST_PHOTO);
-            }
-        });
-
-        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
-        updatePhotoView();
+//        mLocationButton = (Button)v.findViewById(R.id.task_completed);
+//        mLocationButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                startActivityForResult(pickContact, REQUEST_CONTACT);
+//            }
+//        });
+//
+//        if (mTask.getLocation() != null) {
+//            mLocationButton.setText(mTask.getLocation());
+//        }
+//
+//        PackageManager packageManager = getActivity().getPackageManager();
+//        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
+//            mLocationButton.setEnabled(false);
+//        }
+//
+//        mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
+//        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//        boolean canTakePhoto = mPhotoFile != null &&
+//                captureImage.resolveActivity(packageManager) != null;
+//        mPhotoButton.setEnabled(canTakePhoto);
+//
+//
+//        if (canTakePhoto) {
+//            Uri uri = Uri.fromFile(mPhotoFile);
+//            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//        }
+//
+//        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivityForResult(captureImage, REQUEST_PHOTO);
+//            }
+//        });
+//
+//        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+//        updatePhotoView();
 
         return v;
-    }
+     }
 
     private void updateTask() {
         TaskLab.get(getActivity()).updateTask(mTask);
@@ -203,29 +203,29 @@ public class TaskFragment extends Fragment {
         mDateButton.setText(mTask.getDate().toString());
     }
 
-    private String getCrimeReport() {
-        String solvedString = null;
-        if (mTask.isDone()) {
-            solvedString = getString(R.string.crime_report_solved);
-        } else {
-            solvedString = getString(R.string.crime_report_unsolved);
-        }
-
-        String dateFormat = "EEE, MMM dd";
-        String dateString = DateFormat.format(dateFormat, mTask.getDate()).toString();
-
-        String suspect = mTask.getLocation();
-        if (suspect == null) {
-            suspect = getString(R.string.crime_report_no_suspect);
-        } else {
-            suspect = getString(R.string.crime_report_suspect, suspect);
-        }
-
-        String report = getString(R.string.crime_report,
-                mTask.getTitle(), dateString, solvedString, suspect);
-
-        return report;
-    }
+//    private String getCrimeReport() {
+//        String solvedString = null;
+//        if (mTask.isDone()) {
+//            solvedString = getString(R.string.crime_report_solved);
+//        } else {
+//            solvedString = getString(R.string.crime_report_unsolved);
+//        }
+//
+//        String dateFormat = "EEE, MMM dd";
+//        String dateString = DateFormat.format(dateFormat, mTask.getDate()).toString();
+//
+//        String suspect = mTask.getLocation();
+//        if (suspect == null) {
+//            suspect = getString(R.string.crime_report_no_suspect);
+//        } else {
+//            suspect = getString(R.string.crime_report_suspect, suspect);
+//        }
+//
+//        String report = getString(R.string.crime_report,
+//                mTask.getTitle(), dateString, solvedString, suspect);
+//
+//        return report;
+//    }
 
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
